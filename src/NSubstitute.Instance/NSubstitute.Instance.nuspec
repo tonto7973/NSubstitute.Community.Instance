@@ -8,11 +8,13 @@
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/tonto7973/NSubstitute.Instance</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Automatically construct instances for unit tests that use NSubstitute.</description>
+    <description>Create instances of classes for unit tests with dependencies automatically substituted.</description>
     <copyright>(c) Ondrej Urik. All rights reserved.</copyright>
     <tags>NSubstitute instance unit tests</tags>
     <dependencies>
-      <group targetFramework="netstandard2.0" />
+      <group targetFramework="netstandard2.0">
+        <dependency id="NSubstitute" version="4.2.1" />
+      </group>
     </dependencies>
   </metadata>
   <files>
