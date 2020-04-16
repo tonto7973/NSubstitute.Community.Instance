@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSubstitute.Instance", "src\NSubstitute.Instance\NSubstitute.Instance.csproj", "{0996ED74-8B95-4E24-8630-A727BFEEA8DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSubstitute.Instance.Tests", "tests\NSubstitute.Instance.Tests\NSubstitute.Instance.Tests.csproj", "{508B4CA3-FA26-4CC2-BE20-B6D91DE2327B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{9F27AD29-AEDB-48D0-8A3F-AF3389354015}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		.runsettings = .runsettings
+		src\NSubstitute.Instance\NSubstitute.Instance.nuspec = src\NSubstitute.Instance\NSubstitute.Instance.nuspec
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0996ED74-8B95-4E24-8630-A727BFEEA8DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0996ED74-8B95-4E24-8630-A727BFEEA8DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0996ED74-8B95-4E24-8630-A727BFEEA8DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0996ED74-8B95-4E24-8630-A727BFEEA8DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{508B4CA3-FA26-4CC2-BE20-B6D91DE2327B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{508B4CA3-FA26-4CC2-BE20-B6D91DE2327B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{508B4CA3-FA26-4CC2-BE20-B6D91DE2327B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{508B4CA3-FA26-4CC2-BE20-B6D91DE2327B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7F287BC2-CC0C-4D38-BA2D-888DE06E813A}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>NSubstitute.Instance</id>
+    <title>NSubstitute.Instance</title>
+    <version>$version$</version>
+    <authors>tonto7973</authors>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/tonto7973/NSubstitute.Instance</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Automatically construct instances for unit tests that use NSubstitute.</description>
+    <copyright>(c) Ondrej Urik. All rights reserved.</copyright>
+    <tags>NSubstitute instance unit tests</tags>
+    <dependencies>
+      <group targetFramework="netstandard2.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Signed\netstandard2.0\NSubstitute.Instance.dll" target="lib\netstandard2.0" />
+    <file src="bin\Signed\netstandard2.0\NSubstitute.Instance.pdb" target="lib\netstandard2.0" />
+    <file src="bin\Signed\netstandard2.0\NSubstitute.Instance.xml" target="lib\netstandard2.0" />
+  </files>
+</package>
