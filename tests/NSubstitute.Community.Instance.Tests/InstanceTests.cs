@@ -91,7 +91,7 @@ namespace NSubstitute.Tests
         public void InstanceOf_Throws_WhenTypeIsInterface()
         {
             Action action = () => Instance.Of<IDisposable>();
-            action.ShouldThrow<MissingMethodException>()
+            action.ShouldThrow<MemberAccessException>()
                 .Message.ShouldBe("Cannot create an instance of 'System.IDisposable' because it is an interface.");
         }
 
