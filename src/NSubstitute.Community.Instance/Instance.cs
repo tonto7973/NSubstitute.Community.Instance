@@ -6,24 +6,26 @@ using NSubstitute.Instantiation;
 namespace NSubstitute
 {
     /// <summary>
-    /// Creates an instance of a type using one of the declared constructors. For example: <c>Instance.Of&lt;SomeClass&gt;()</c>
+    /// Provides functionality to instantiate a type with dependencies automatically substituted.
+    /// For example: <c>Instance.Of&lt;SomeClass&gt;()</c>
     /// </summary>
     public static class Instance
     {
         private static readonly INameForSubstitute NameForSubstitute = new NameForSubstitute();
 
         /// <summary>
-        /// Creates an instance of a type.
+        /// Creates an instance of a type with dependencies automatically substituted.
         /// </summary>
-        /// <typeparam name="TType">The type of class to instantiate.</typeparam>
-        /// <param name="dependencies">Dependencies used to instantiate the class.</param>
+        /// <typeparam name="TType">The type of a class to instantiate.</typeparam>
+        /// <param name="dependencies">Optional dependencies used to instantiate the type. These will not be substituted.</param>
         /// <returns>An instance of the type.</returns>
+        /// <remarks>Interfaces and abstract classes are not supported.</remarks>
         public static TType Of<TType>(params object[] dependencies)
             where TType : class
         {
             Type type = typeof(TType);
             if (type.IsInterface)
-                throw new MissingMethodException(SR.Format(SR.CannotCreateInstanceOfInterface, type.FullName));
+                throw new MemberAccessException(SR.Format(SR.CannotCreateInstanceOfInterface, type.FullName));
             if (type.IsAbstract)
                 throw new MemberAccessException(SR.Format(SR.CannotCreateInstanceOfAbstractClass, type.FullName));
 

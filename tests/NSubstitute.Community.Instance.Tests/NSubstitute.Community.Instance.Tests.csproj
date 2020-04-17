@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NSubstitute.Instance\NSubstitute.Instance.csproj" />
+    <ProjectReference Include="..\..\src\NSubstitute.Community.Instance\NSubstitute.Community.Instance.csproj" />
   </ItemGroup>
 
 </Project>

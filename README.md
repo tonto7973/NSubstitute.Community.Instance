@@ -1,4 +1,4 @@
-# NSubstitute.Instance
+# NSubstitute.Community.Instance
 
 This little addon to [NSubstitute](https://github.com/nsubstitute/NSubstitute) allows you to create instances of classes used in unit testing with all relevant dependencies automatically substituted by `Substitute.For()`.
 
@@ -22,7 +22,7 @@ Lets say you have a class defined as:
 public class DocumentRepository(IRestClient restClient, IJwtTokenProvider tokenProvider, IDocumentRepositoryOptions options, ILogger<DocumentRepositoryOptions> logger)
 ```
 
-Your typical unit test code could look like this:
+Your typical unit test code might look like this:
 
 ```csharp
 [Test]
@@ -40,7 +40,7 @@ public void GetDocument_ReturnsValidDocument_WhenDefaultOptionsUsed()
 }
 ```
 
-With `NSubstitute.Instance` the arrange part of the unit test can be simplified to:
+With `Instance.Of` the arrange part of the unit test can be simplified to:
 
 ```csharp
 [Test]
@@ -76,7 +76,7 @@ Multiple constructors are supported. The parameter matching logic will try to ch
 
 ### Constructor parameters
 
-You can pass optional arguments to `Instance.Of`. These optional arguments will not be substituted. All other required constructor arguments will be substituted.
+You can pass optional arguments to `Instance.Of`. These optional arguments will be used instead of substitutions. All other required constructor arguments will be substituted.
 
 ```csharp
 var restClient = Substitute.For<IRestClient>();
@@ -113,7 +113,7 @@ Instance.Of<MyService>();
 
 ### Abstract classes and interfaces are not supported
 
-`Instace.Of<TClass>` supports only concrete classes. Use `Substitute.For<TType>` for interfaces and abstract classes.
+`Instace.Of<TType>` supports only concrete classes. Use `Substitute.For<TType>` for interfaces and abstract classes.
 
 ## Suported platforms
 

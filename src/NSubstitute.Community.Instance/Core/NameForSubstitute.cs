@@ -8,8 +8,11 @@ namespace NSubstitute.Core
 {
     public class NameForSubstitute : INameForSubstitute
     {
-        private static readonly Regex RxSubstitute = new Regex("^Substitute\\.(.*?)\\|[a-z0-9]+$", RegexOptions.Compiled);
-        private static readonly Lazy<Assembly> DynamicProxyAssembly = new Lazy<Assembly>(() => Substitute.For<object>().GetType().Assembly);
+        private static readonly Regex RxSubstitute
+            = new Regex("^Substitute\\.(.*?)\\|[a-z0-9]+$", RegexOptions.Compiled);
+
+        private static readonly Lazy<Assembly> DynamicProxyAssembly
+            = new Lazy<Assembly>(() => Substitute.For<object>().GetType().Assembly);
 
         public string GetNameFor(object substitute)
         {

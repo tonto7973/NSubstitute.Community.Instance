@@ -7,7 +7,7 @@
           <CodeCoverage>
             <ModulePaths>
               <Include>
-                <ModulePath>.*\NSubstitute.Instance.dll$</ModulePath>
+                <ModulePath>.*\NSubstitute.Community.Instance.dll$</ModulePath>
               </Include>
             </ModulePaths>
             <Attributes>
@@ -29,7 +29,7 @@
     </DataCollectors>
   </DataCollectionRunSettings>
   <NUnit>
-    <WorkDirectory>C:\Projects\ondrej\NSubstitute.Instance\NUnitTestData</WorkDirectory>
+    <WorkDirectory>C:\Projects\ondrej\NSubstitute.Community.Instance\NUnitTestData</WorkDirectory>
     <DumpXmlTestDiscovery>True</DumpXmlTestDiscovery>
     <DumpXmlTestResults>True</DumpXmlTestResults>
   </NUnit>

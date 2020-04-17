@@ -5,7 +5,7 @@ rem # Build script
 rem ############################################
 
 rem ### Build Script Optional Configuration ###
-set PROJECT=NSubstitute.Instance
+set PROJECT=NSubstitute.Community.Instance
 set VERSION=%1
 
 rem ### Build variables
@@ -56,15 +56,13 @@ IF %ERRORLEVEL% NEQ 0 GOTO QUIT
 
 :NUCLEAN
 if "%VERSION%" NEQ "0.0.0" goto CLEAN
-for %%a IN (NSubstitute.Instance) DO (
-    set PKGCORE=%USERPROFILE%\.nuget\packages\%%a\0.0.0
-    if exist "!PKGCORE!" (
-        echo Removing old local package "!PKGCORE!" ...
-        rmdir /S /Q "!PKGCORE!"
-        if %ERRORLEVEL% NEQ 0 goto QUIT
-    )
-    echo.
+set PKGCORE=%USERPROFILE%\.nuget\packages\%PROJECT%\0.0.0
+if exist "%PKGCORE%" (
+    echo Removing old local package "%PKGCORE%" ...
+    rmdir /S /Q "%PKGCORE%"
+    if %ERRORLEVEL% NEQ 0 goto QUIT
 )
+echo.
 
 :CLEAN
 echo Cleaning %PROJECT% ...
@@ -89,14 +87,14 @@ echo.
 
 :SIGN
 echo Signing %PROJECT% ...
-dotnet build "%ROOT_DIR%\src\NSubstitute.Instance\NSubstitute.Instance.csproj" --configuration Signed -p:Version=%VERSION%.0
+dotnet build "%ROOT_DIR%\src\%PROJECT%\%PROJECT%.csproj" --configuration Signed -p:Version=%VERSION%.0
 if %ERRORLEVEL% NEQ 0 goto QUIT
 echo Signing completed.
 echo.
 
 :PACK
 echo Packaging %PROJECT% ...
-dotnet pack --nologo --no-build "%ROOT_DIR%\src\NSubstitute.Instance\NSubstitute.Instance.csproj" -p:NuspecFile="%ROOT_DIR%\src\NSubstitute.Instance\NSubstitute.Instance.nuspec" -p:NuspecBasePath="%ROOT_DIR%\src\NSubstitute.Instance" -p:NuspecProperties="version=%VERSION%" --output "%PACKAGES_DIR%"
+dotnet pack --nologo --no-build "%ROOT_DIR%\src\%PROJECT%\%PROJECT%.csproj" -p:NuspecFile="%ROOT_DIR%\src\%PROJECT%\%PROJECT%.nuspec" -p:NuspecBasePath="%ROOT_DIR%\src\%PROJECT%" -p:NuspecProperties="version=%VERSION%" --output "%PACKAGES_DIR%"
 if %ERRORLEVEL% NEQ 0 goto QUIT
 echo Packaging completed.
 echo.

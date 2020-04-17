@@ -1,6 +1,6 @@
 ﻿using System;
-using NUnit.Framework;
 using NSubstitute.Core;
+using NUnit.Framework;
 using Shouldly;
 
 namespace NSubstitute.Tests.Core
