@@ -111,7 +111,7 @@ new DocumentRepository(Substitute.For<IRestClient>());
 
 ### Null values in constructor parameters
 
-This is currently supported by using `Instance.Null<T>()`. Pasing simply `null` has no effect as null is replaced by a substitute.
+This is currently supported by using `Instance.Null<T>()`. Pasing `null` will throw an exception.
 
 ```csharp
 // Consider this constructor signature:
