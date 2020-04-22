@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.ExceptionServices;
 using NSubstitute.Core;
 using NSubstitute.Instantiation;
 
@@ -19,29 +21,56 @@ namespace NSubstitute
         /// <typeparam name="TType">The type of a class to instantiate.</typeparam>
         /// <param name="dependencies">Optional dependencies used to instantiate the type. These will not be substituted.</param>
         /// <returns>An instance of the type.</returns>
-        /// <remarks>Interfaces and abstract classes are not supported.</remarks>
+        /// <remarks>Interfaces are not supported.</remarks>
         public static TType Of<TType>(params object[] dependencies)
             where TType : class
         {
-            Type type = typeof(TType);
+            return (TType)Of(typeof(TType), dependencies);
+        }
+
+        /// <summary>
+        /// Creates an instance of a type with dependencies automatically substituted.
+        /// </summary>
+        /// <param name="type">The type of a class to instantiate.</param>
+        /// <param name="dependencies">Optional dependencies used to instantiate the type. These will not be substituted.</param>
+        /// <returns>An instance of the type.</returns>
+        /// <remarks>Interfaces are not supported.</remarks>
+        public static object Of(Type type, params object[] dependencies)
+        {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
             if (type.IsInterface)
                 throw new MemberAccessException(SR.Format(SR.CannotCreateInstanceOfInterface, type.FullName));
-            if (type.IsAbstract)
-                throw new MemberAccessException(SR.Format(SR.CannotCreateInstanceOfAbstractClass, type.FullName));
 
             dependencies = dependencies ?? Array.Empty<object>();
 
             Activation activation = ActivationLookup
-                .For<TType>(dependencies)
+                .For(type, dependencies)
                 .OrderBy(a => a.ConstructorInfo.IsPublic)
                 .ThenBy(a => a.Match == ArgumentMatch.Exact)
                 .ThenBy(a => a.ConstructorInfo.GetParameters().Length)
                 .ThenBy(a => a.Match)
                 .FirstOrDefault();
 
-            return activation != null
-                ? activation.Invoke<TType>()
-                : throw new MissingMethodException(SR.Format(SR.CannotFindMatchingConstructor, type.FullName, NameForSubstitute.GetNamesFor(dependencies)));
+            try
+            {
+                if (activation != null)
+                    return activation.Invoke();
+            }
+            catch (TargetInvocationException ex)
+            {
+                ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+            }
+
+            throw new MissingMethodException(SR.Format(SR.CannotFindMatchingConstructor, type.FullName, NameForSubstitute.GetNamesFor(dependencies)));
         }
+
+        /// <summary>
+        /// Creates a null substitute of a type.
+        /// </summary>
+        /// <typeparam name="TType">The type to substitute as null.</typeparam>
+        /// <returns>Null substitute for the type.</returns>
+        public static INullValue Null<TType>()
+            => new NullValue(typeof(TType));
     }
 }

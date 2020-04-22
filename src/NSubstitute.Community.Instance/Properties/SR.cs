@@ -1,4 +1,4 @@
-﻿namespace NSubstitute
+﻿namespace NSubstitute.Instantiation
 {
     internal partial class SR
     {

@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NSubstitute {
+namespace NSubstitute.Instantiation
+{
     using System;
     
     
@@ -39,7 +40,7 @@ namespace NSubstitute {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NSubstitute.SR", typeof(SR).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NSubstitute.Properties.SR", typeof(SR).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,15 +58,6 @@ namespace NSubstitute {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot create an instance of &apos;{0}&apos; because it is an abstract class..
-        /// </summary>
-        internal static string CannotCreateInstanceOfAbstractClass {
-            get {
-                return ResourceManager.GetString("CannotCreateInstanceOfAbstractClass", resourceCulture);
             }
         }
         

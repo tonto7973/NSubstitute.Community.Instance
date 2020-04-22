@@ -1,19 +1,24 @@
-﻿using System;
+﻿using System.Linq;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
+using NSubstitute.Core;
 
 namespace NSubstitute.Instantiation
 {
     internal static class ActivationExtensions
     {
-        internal static TType Invoke<TType>(this Activation activation)
+        internal static object Invoke(this Activation activation)
         {
-            if (activation == null)
-                throw new ArgumentNullException(nameof(activation));
+            var constructorArguments = activation
+                .Arguments
+                .Select(arg => arg is INullValue ? null : arg)
+                .ToArray();
 
             try
             {
-                return (TType)activation.ConstructorInfo.Invoke(activation.Arguments);
+                return activation.ConstructorInfo.DeclaringType.IsAbstract
+                    ? activation.InvokeAbstract(constructorArguments)
+                    : activation.InvokeConcrete(constructorArguments);
             }
             catch (TargetInvocationException ex)
             {
@@ -21,5 +26,18 @@ namespace NSubstitute.Instantiation
                 throw;
             }
         }
+
+        private static object InvokeAbstract(this Activation activation, object[] constructorArguments)
+            => SubstitutionContext
+                    .Current
+                    .SubstituteFactory
+                    .CreatePartial(
+                        new[] { activation.ConstructorInfo.DeclaringType },
+                        constructorArguments);
+
+        private static object InvokeConcrete(this Activation activation, object[] constructorArguments)
+            => activation
+                    .ConstructorInfo
+                    .Invoke(constructorArguments);
     }
 }
