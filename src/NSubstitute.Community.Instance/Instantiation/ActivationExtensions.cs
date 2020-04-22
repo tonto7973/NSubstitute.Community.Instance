@@ -23,7 +23,7 @@ namespace NSubstitute.Instantiation
             catch (TargetInvocationException ex)
             {
                 ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
-                throw;
+                return null;
             }
         }
 

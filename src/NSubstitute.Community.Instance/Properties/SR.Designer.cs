@@ -71,11 +71,20 @@ namespace NSubstitute.Instantiation
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot find a constructor on type &apos;{0}&apos; matching dependencies &apos;[{1}]&apos;..
+        ///   Looks up a localized string similar to Cannot find accessible constructor on type &apos;{0}&apos;..
         /// </summary>
-        internal static string CannotFindMatchingConstructor {
+        internal static string CannotFindAccessibleConstructor {
             get {
-                return ResourceManager.GetString("CannotFindMatchingConstructor", resourceCulture);
+                return ResourceManager.GetString("CannotFindAccessibleConstructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find accessible constructor on type &apos;{0}&apos; matching dependencies &apos;[{1}]&apos;..
+        /// </summary>
+        internal static string CannotFindMatchingAccessibleConstructor {
+            get {
+                return ResourceManager.GetString("CannotFindMatchingAccessibleConstructor", resourceCulture);
             }
         }
     }

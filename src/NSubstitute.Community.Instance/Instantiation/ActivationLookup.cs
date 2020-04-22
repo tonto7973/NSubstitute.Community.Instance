@@ -9,8 +9,6 @@ namespace NSubstitute.Instantiation
 {
     internal static class ActivationLookup
     {
-        private static readonly DefaultForType DefaultValues = new DefaultForType();
-
         internal static IEnumerable<Activation> For(Type type, object[] constructorArguments)
         {
             IEnumerable<ConstructorInfo> constructors = type
@@ -21,8 +19,11 @@ namespace NSubstitute.Instantiation
         }
 
         private static bool ConstructorIsAccessible(ConstructorInfo constructor)
-            => constructor.IsPublic || constructor.IsFamily || constructor.IsFamilyOrAssembly
-                || (constructor.IsAssembly && ProxyUtil.IsAccessible(constructor));
+            => constructor.IsPublic
+            || constructor.IsFamily
+            || constructor.IsFamilyOrAssembly
+            || constructor.IsAssembly
+            || ProxyUtil.IsAccessible(constructor);
 
         private static IEnumerable<Activation> FindMatchingConstructors(
             this IEnumerable<ConstructorInfo> constructors,
@@ -64,10 +65,8 @@ namespace NSubstitute.Instantiation
                     newArguments[paramIndex] = arg;
                 else if (param.HasDefaultValue)
                     newArguments[paramIndex] = param.DefaultValue;
-                else if (TryUseSubstitute(param, out var substitute))
-                    newArguments[paramIndex] = substitute;
                 else
-                    newArguments[paramIndex] = DefaultValues.GetDefaultFor(param.ParameterType);
+                    newArguments[paramIndex] = UseSubstitute(param);
                 paramIndex++;
             }
 
@@ -97,23 +96,13 @@ namespace NSubstitute.Instantiation
             return false;
         }
 
-        private static bool TryUseSubstitute(ParameterInfo param, out object substitute)
-        {
-            try
-            {
-                substitute = param.ParameterType.IsInterface
-                    ? Substitute.For(new[] { param.ParameterType }, null)
-                    : Instance.Of(param.ParameterType);
-                return true;
-            }
-            catch
-            {
-                substitute = null;
-                return false;
-            }
-        }
+        private static object UseSubstitute(ParameterInfo param)
+            => param.ParameterType.IsInterface
+                ? Substitute.For(new[] { param.ParameterType }, null)
+                : Instance.Of(param.ParameterType);
 
-        private static bool IsInstanceOf(this ParameterInfo param, object arg) => arg is INullValue nullValue
+        private static bool IsInstanceOf(this ParameterInfo param, object arg)
+            => arg is INullValue nullValue
                 ? param.ParameterType.IsAssignableFrom(nullValue.Type)
                 : param.ParameterType.IsInstanceOfType(arg);
     }

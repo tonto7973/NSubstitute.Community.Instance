@@ -120,7 +120,10 @@
   <data name="CannotCreateInstanceOfInterface" xml:space="preserve">
     <value>Cannot create an instance of '{0}' because it is an interface.</value>
   </data>
-  <data name="CannotFindMatchingConstructor" xml:space="preserve">
-    <value>Cannot find a constructor on type '{0}' matching dependencies '[{1}]'.</value>
+  <data name="CannotFindAccessibleConstructor" xml:space="preserve">
+    <value>Cannot find accessible constructor on type '{0}'.</value>
+  </data>
+  <data name="CannotFindMatchingAccessibleConstructor" xml:space="preserve">
+    <value>Cannot find accessible constructor on type '{0}' matching dependencies '[{1}]'.</value>
   </data>
 </root>

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.ExceptionServices;
 using NSubstitute.Core;
 using NSubstitute.Instantiation;
 
@@ -52,17 +50,14 @@ namespace NSubstitute
                 .ThenBy(a => a.Match)
                 .FirstOrDefault();
 
-            try
-            {
-                if (activation != null)
-                    return activation.Invoke();
-            }
-            catch (TargetInvocationException ex)
-            {
-                ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
-            }
+            if (activation != null)
+                return activation.Invoke();
 
-            throw new MissingMethodException(SR.Format(SR.CannotFindMatchingConstructor, type.FullName, NameForSubstitute.GetNamesFor(dependencies)));
+            var formattedExceptionMessage = dependencies.Length > 0
+                ? SR.Format(SR.CannotFindMatchingAccessibleConstructor, type.FullName, NameForSubstitute.GetNamesFor(dependencies))
+                : SR.Format(SR.CannotFindAccessibleConstructor, type.FullName);
+
+            throw new MissingMethodException(formattedExceptionMessage);
         }
 
         /// <summary>

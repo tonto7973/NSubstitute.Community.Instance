@@ -70,7 +70,7 @@ namespace NSubstitute.Tests
             Action action = () => Instance.Of<TestClassOne>(arg, 15, true);
 
             action.ShouldThrow<MissingMethodException>()
-                .Message.ShouldBe("Cannot find a constructor on type 'NSubstitute.Tests.Stubs.TestClassOne' matching dependencies '[IEqualityComparer, Int32, Boolean]'.");
+                .Message.ShouldBe("Cannot find accessible constructor on type 'NSubstitute.Tests.Stubs.TestClassOne' matching dependencies '[IEqualityComparer, Int32, Boolean]'.");
         }
 
         [Test]
@@ -158,11 +158,37 @@ namespace NSubstitute.Tests
         }
 
         [Test]
+        public void InstanceOf_Throws_WhenDependencyCannotBeInstantiated()
+        {
+            Action action = () => Instance.Of<TestClassFive>();
+
+            action.ShouldThrow<MissingMethodException>()
+                .Message.ShouldBe("Cannot find accessible constructor on type 'NSubstitute.Tests.Stubs.TestSealedClass'.");
+        }
+
+        [Test]
         public void InstanceNull_ReturnsNullSubstitute()
         {
             INullValue nullSubstitute = Instance.Null<ITestInterfaceOne>();
 
             nullSubstitute.Type.ShouldBe(typeof(ITestInterfaceOne));
+        }
+
+        [Test]
+        public void InstanceOf_CreatesSubstitutesForInterfaceAndAbstractClassAutomatically()
+        {
+            TestClassSix testInstance = Instance.Of<TestClassSix>();
+
+            testInstance.AbstractClass.ShouldNotBeNull();
+            testInstance.InterfaceOne.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void InstanceOf_CreatesSubstitutesForProtectedInternal()
+        {
+            TestClassSeven testInstance = Instance.Of<TestClassSeven>();
+
+            testInstance.TextWriter.ShouldNotBeNull();
         }
     }
 }
