@@ -154,7 +154,7 @@ Instance.Of<MyService>();
 // does not fail, it will call the protected constructor
 ```
 
-## Supports abstract classes
+### Supports abstract classes
 
 This is supported as long as any of abstract class constructor is accessible to NSubstitute. The actual class is proxied through `Substitute.ForPartsOf`.
 
