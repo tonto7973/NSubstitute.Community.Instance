@@ -1,30 +1,39 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Castle.DynamicProxy;
 using NSubstitute.Core;
 
 namespace NSubstitute.Instantiation
 {
     internal static class ActivationLookup
     {
-        private static readonly DefaultForType DefaultValues = new DefaultForType();
-
-        internal static IEnumerable<Activation> For<TType>(object[] constructorArguments)
-            where TType : class
+        internal static IEnumerable<Activation> For(Type type, object[] constructorArguments)
         {
-            ConstructorInfo[] constructors = typeof(TType)
-                .GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.CreateInstance | BindingFlags.Instance);
+            IEnumerable<ConstructorInfo> constructors = type
+                .GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.CreateInstance | BindingFlags.Instance)
+                .Where(ConstructorIsAccessible);
 
             return FindMatchingConstructors(constructors, constructorArguments);
         }
 
-        private static IEnumerable<Activation> FindMatchingConstructors(this ConstructorInfo[] constructors, object[] constructorArguments)
+        private static bool ConstructorIsAccessible(ConstructorInfo constructor)
+            => constructor.IsPublic
+            || constructor.IsFamily
+            || constructor.IsFamilyOrAssembly
+            || constructor.IsAssembly
+            || ProxyUtil.IsAccessible(constructor);
+
+        private static IEnumerable<Activation> FindMatchingConstructors(
+            this IEnumerable<ConstructorInfo> constructors,
+            object[] constructorArguments)
         {
-            foreach (ConstructorInfo ctor in constructors)
+            foreach (ConstructorInfo constructor in constructors)
             {
-                if (ctor.TryFindExactMatch(constructorArguments, out Activation exactInstanceInfo))
+                if (constructor.TryFindExactMatch(constructorArguments, out Activation exactInstanceInfo))
                     yield return exactInstanceInfo;
-                else if (ctor.TryFindPartialMatch(constructorArguments, out Activation partialInstanceInfo))
+                else if (constructor.TryFindPartialMatch(constructorArguments, out Activation partialInstanceInfo))
                     yield return partialInstanceInfo;
             }
         }
@@ -34,9 +43,9 @@ namespace NSubstitute.Instantiation
             ParameterInfo[] parameters = constructor.GetParameters();
             var exactMatchFound = parameters.Length == constructorArguments.Length
                 && (parameters.Length == 0 ||
-                    parameters.Select((param, i) =>
-                        param.ParameterType.IsInstanceOfType(constructorArguments[i])
-                    ).All(x => x));
+                    parameters
+                        .Select((param, i) => param.IsInstanceOf(constructorArguments[i]))
+                        .All(x => x));
             instanceInfo = exactMatchFound
                 ? new Activation { Arguments = constructorArguments, ConstructorInfo = constructor, Match = ArgumentMatch.Exact }
                 : null;
@@ -56,10 +65,8 @@ namespace NSubstitute.Instantiation
                     newArguments[paramIndex] = arg;
                 else if (param.HasDefaultValue)
                     newArguments[paramIndex] = param.DefaultValue;
-                else if (TryUseSubstitute(param, out var substitute))
-                    newArguments[paramIndex] = substitute;
                 else
-                    newArguments[paramIndex] = DefaultValues.GetDefaultFor(param.ParameterType);
+                    newArguments[paramIndex] = UseSubstitute(param);
                 paramIndex++;
             }
 
@@ -76,7 +83,7 @@ namespace NSubstitute.Instantiation
             for (var i = 0; i < args.Count; i++)
             {
                 arg = args[i];
-                if (param.ParameterType.IsInstanceOfType(arg))
+                if (param.IsInstanceOf(arg))
                 {
                     args.RemoveAt(i);
                     if (i > 0)
@@ -89,18 +96,14 @@ namespace NSubstitute.Instantiation
             return false;
         }
 
-        private static bool TryUseSubstitute(ParameterInfo param, out object substitute)
-        {
-            try
-            {
-                substitute = Substitute.For(new[] { param.ParameterType }, null);
-                return true;
-            }
-            catch
-            {
-                substitute = null;
-                return false;
-            }
-        }
+        private static object UseSubstitute(ParameterInfo param)
+            => param.ParameterType.IsInterface
+                ? Substitute.For(new[] { param.ParameterType }, null)
+                : Instance.Of(param.ParameterType);
+
+        private static bool IsInstanceOf(this ParameterInfo param, object arg)
+            => arg is INullValue nullValue
+                ? param.ParameterType.IsAssignableFrom(nullValue.Type)
+                : param.ParameterType.IsInstanceOfType(arg);
     }
 }

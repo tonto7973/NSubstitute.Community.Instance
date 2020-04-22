@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using NSubstitute.Core;
 using NSubstitute.Tests.Stubs;
 using NUnit.Framework;
 using Shouldly;
@@ -8,6 +10,15 @@ namespace NSubstitute.Tests
 {
     public class InstanceTests
     {
+        [Test]
+        public void InstanceOf_Throws_WhenTypeIsNull()
+        {
+            Action action = () => Instance.Of(null);
+
+            action.ShouldThrow<ArgumentNullException>()
+                .ParamName.ShouldBe("type");
+        }
+
         [Test]
         public void InstanceOf_CreatesInstanceWithPublicConstructor_WhenNoArgumentsSpecified()
         {
@@ -59,7 +70,16 @@ namespace NSubstitute.Tests
             Action action = () => Instance.Of<TestClassOne>(arg, 15, true);
 
             action.ShouldThrow<MissingMethodException>()
-                .Message.ShouldBe("Cannot find a constructor on type 'NSubstitute.Tests.Stubs.TestClassOne' matching dependencies '[IEqualityComparer, Int32, Boolean]'.");
+                .Message.ShouldBe("Cannot find accessible constructor on type 'NSubstitute.Tests.Stubs.TestClassOne' matching dependencies '[IEqualityComparer, Int32, Boolean]'.");
+        }
+
+        [Test]
+        public void InstanceOf_DoesNotSubstituteDefaultParameters()
+        {
+            TestClassOne instance = Instance.Of<TestClassOne>(Substitute.For<ITestInterfaceOne>());
+
+            instance.OnValue.ShouldBeNull();
+            instance.Data.ShouldNotBeNull();
         }
 
         [Test]
@@ -83,7 +103,7 @@ namespace NSubstitute.Tests
         [Test]
         public void InstanceOf_Throws_WhenClassConstructorThrows()
         {
-            Action action = () => Instance.Of<TestClassThree>();
+            Action action = () => Instance.Of<TestClassThree>(Instance.Null<TestClassTwo>());
             action.ShouldThrow<ArgumentNullException>();
         }
 
@@ -93,14 +113,6 @@ namespace NSubstitute.Tests
             Action action = () => Instance.Of<IDisposable>();
             action.ShouldThrow<MemberAccessException>()
                 .Message.ShouldBe("Cannot create an instance of 'System.IDisposable' because it is an interface.");
-        }
-
-        [Test]
-        public void InstanceOf_Throws_WhenTypeIsAbstract()
-        {
-            Action action = () => Instance.Of<TestBaseClassOne>();
-            action.ShouldThrow<MemberAccessException>()
-                .Message.ShouldBe("Cannot create an instance of 'NSubstitute.Tests.Stubs.TestBaseClassOne' because it is an abstract class.");
         }
 
         [Test]
@@ -116,6 +128,77 @@ namespace NSubstitute.Tests
             TestClassFour<bool> instance = Instance.Of<TestClassFour<bool>>();
 
             instance.Set.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void InstanceOf_PassesNullToConstructor_WhenArgumentsPartial()
+        {
+            Action action = () => Instance.Of<TestClassTwo>(Instance.Null<ITestInterfaceOne>());
+
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        [Test]
+        public void InstanceOf_PassesNullToConstructor_WhenArgumentsSwapped()
+        {
+            Action action = () => Instance.Of<TestClassTwo>(
+                Instance.Null<ICollection<int>>(),
+                Instance.Null<ITestInterfaceOne>()
+            );
+
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        [Test]
+        public void InstanceOf_CreatesAbstractClassWithProtectedConstructor()
+        {
+            TestBaseAbstractClassOne testInstance = Instance.Of<TestBaseAbstractClassOne>();
+
+            testInstance.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void InstanceOf_Throws_WhenDependencyCannotBeInstantiated()
+        {
+            Action action = () => Instance.Of<TestClassFive>();
+
+            action.ShouldThrow<MissingMethodException>()
+                .Message.ShouldBe("Cannot find accessible constructor on type 'NSubstitute.Tests.Stubs.TestSealedClass'.");
+        }
+
+        [Test]
+        public void InstanceNull_ReturnsNullSubstitute()
+        {
+            INullValue nullSubstitute = Instance.Null<ITestInterfaceOne>();
+
+            nullSubstitute.Type.ShouldBe(typeof(ITestInterfaceOne));
+        }
+
+        [Test]
+        public void InstanceOf_CreatesSubstitutesForInterfaceAndAbstractClassAutomatically()
+        {
+            TestClassSix testInstance = Instance.Of<TestClassSix>();
+
+            testInstance.AbstractClass.ShouldNotBeNull();
+            testInstance.InterfaceOne.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void InstanceOf_CreatesSubstitutesForProtectedInternal()
+        {
+            TestClassSeven testInstance = Instance.Of<TestClassSeven>();
+
+            testInstance.TextWriter.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void InstanceOf_Throws_WhenDependencyIsNull()
+        {
+            Action action = () => Instance.Of<TestClassSeven>(new object[] { null });
+
+            var exception = action.ShouldThrow<ArgumentNullException>();
+            exception.ParamName.ShouldBe("dependencies[0]");
+            exception.Message.ShouldStartWith("Dependency cannot be null; Use Instance.Null instead.");
         }
     }
 }

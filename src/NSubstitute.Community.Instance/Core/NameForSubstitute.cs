@@ -18,6 +18,8 @@ namespace NSubstitute.Core
         {
             if (substitute == null)
                 return "?";
+            if (substitute is INullValue)
+                return "null";
 
             return TryGetNameForProxyType(substitute, out var typeName)
                 ? typeName

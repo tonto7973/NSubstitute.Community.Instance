@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NSubstitute {
+namespace NSubstitute.Instantiation {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace NSubstitute {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NSubstitute.SR", typeof(SR).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NSubstitute.Properties.SR", typeof(SR).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,15 +61,6 @@ namespace NSubstitute {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot create an instance of &apos;{0}&apos; because it is an abstract class..
-        /// </summary>
-        internal static string CannotCreateInstanceOfAbstractClass {
-            get {
-                return ResourceManager.GetString("CannotCreateInstanceOfAbstractClass", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot create an instance of &apos;{0}&apos; because it is an interface..
         /// </summary>
         internal static string CannotCreateInstanceOfInterface {
@@ -79,11 +70,29 @@ namespace NSubstitute {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot find a constructor on type &apos;{0}&apos; matching dependencies &apos;[{1}]&apos;..
+        ///   Looks up a localized string similar to Cannot find accessible constructor on type &apos;{0}&apos;..
         /// </summary>
-        internal static string CannotFindMatchingConstructor {
+        internal static string CannotFindAccessibleConstructor {
             get {
-                return ResourceManager.GetString("CannotFindMatchingConstructor", resourceCulture);
+                return ResourceManager.GetString("CannotFindAccessibleConstructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find accessible constructor on type &apos;{0}&apos; matching dependencies &apos;[{1}]&apos;..
+        /// </summary>
+        internal static string CannotFindMatchingAccessibleConstructor {
+            get {
+                return ResourceManager.GetString("CannotFindMatchingAccessibleConstructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dependency cannot be null; Use Instance.Null instead..
+        /// </summary>
+        internal static string DependencyCannotBeNull {
+            get {
+                return ResourceManager.GetString("DependencyCannotBeNull", resourceCulture);
             }
         }
     }

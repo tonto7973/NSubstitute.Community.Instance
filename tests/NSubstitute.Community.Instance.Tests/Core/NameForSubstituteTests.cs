@@ -64,5 +64,16 @@ namespace NSubstitute.Tests.Core
 
             result.ShouldBe("TestClassTwo");
         }
+
+        [Test]
+        public void GetNameFor_INullValue_ReturnsNull()
+        {
+            var value = Instance.Null<IEnumerable>();
+            var nameForSubstitute = new NameForSubstitute();
+
+            var result = nameForSubstitute.GetNameFor(value);
+
+            result.ShouldBe("null");
+        }
     }
 }

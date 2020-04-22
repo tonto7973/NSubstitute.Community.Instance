@@ -3,23 +3,25 @@ using System.Collections;
 
 namespace NSubstitute.Tests.Stubs
 {
-    public class TestClassOne : TestBaseClassOne
+    public class TestClassOne : TestBaseAbstractClassOne
     {
-        private readonly Action<int> _onValue;
+        public readonly Action<int> OnValue;
+
+        public readonly IEnumerable Data;
 
         protected TestClassOne() : base(null) { }
 
         public TestClassOne(ITestInterfaceOne testInterface, IEnumerable data, Action<int> onValue = null)
             : base(testInterface)
         {
-            _onValue = onValue;
-            System.Diagnostics.Debug.WriteLine($"data={data}");
+            OnValue = onValue;
+            Data = data;
         }
 
         public int GetValue()
         {
             var value = TestInterface.Value;
-            _onValue?.Invoke(value);
+            OnValue?.Invoke(value);
             return value;
         }
     }
