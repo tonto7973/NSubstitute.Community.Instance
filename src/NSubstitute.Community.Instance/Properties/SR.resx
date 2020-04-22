@@ -126,4 +126,7 @@
   <data name="CannotFindMatchingAccessibleConstructor" xml:space="preserve">
     <value>Cannot find accessible constructor on type '{0}' matching dependencies '[{1}]'.</value>
   </data>
+  <data name="DependencyCannotBeNull" xml:space="preserve">
+    <value>Dependency cannot be null; Use Instance.Null instead.</value>
+  </data>
 </root>

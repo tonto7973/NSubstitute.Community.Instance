@@ -42,6 +42,10 @@ namespace NSubstitute
 
             dependencies = dependencies ?? Array.Empty<object>();
 
+            var firstNullValue = Array.IndexOf(dependencies, null);
+            if (firstNullValue > -1)
+                throw new ArgumentNullException($"{nameof(dependencies)}[{firstNullValue}]", SR.Format(SR.DependencyCannotBeNull));
+
             Activation activation = ActivationLookup
                 .For(type, dependencies)
                 .OrderBy(a => a.ConstructorInfo.IsPublic)

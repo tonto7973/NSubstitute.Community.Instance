@@ -8,8 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NSubstitute.Instantiation
-{
+namespace NSubstitute.Instantiation {
     using System;
     
     
@@ -85,6 +84,15 @@ namespace NSubstitute.Instantiation
         internal static string CannotFindMatchingAccessibleConstructor {
             get {
                 return ResourceManager.GetString("CannotFindMatchingAccessibleConstructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dependency cannot be null; Use Instance.Null instead..
+        /// </summary>
+        internal static string DependencyCannotBeNull {
+            get {
+                return ResourceManager.GetString("DependencyCannotBeNull", resourceCulture);
             }
         }
     }

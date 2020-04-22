@@ -190,5 +190,15 @@ namespace NSubstitute.Tests
 
             testInstance.TextWriter.ShouldNotBeNull();
         }
+
+        [Test]
+        public void InstanceOf_Throws_WhenDependencyIsNull()
+        {
+            Action action = () => Instance.Of<TestClassSeven>(new object[] { null });
+
+            var exception = action.ShouldThrow<ArgumentNullException>();
+            exception.ParamName.ShouldBe("dependencies[0]");
+            exception.Message.ShouldStartWith("Dependency cannot be null; Use Instance.Null instead.");
+        }
     }
 }
