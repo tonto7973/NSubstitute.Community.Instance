@@ -96,5 +96,17 @@ namespace NSubstitute.Tests.Core
 
             result.ShouldBe("List<double>");
         }
+
+        [Test]
+        public void GetNameFor_NestedGenericType_ResolvesGenerics()
+        {
+            var nameForSubstitute = new NameForSubstitute();
+
+            var result = nameForSubstitute.GetNameFor(new List<NestedGenericTest<bool?, int>>());
+
+            result.ShouldBe("List<NestedGenericTest<bool?,int>>");
+        }
+
+        private class NestedGenericTest<T1, T2> { }
     }
 }

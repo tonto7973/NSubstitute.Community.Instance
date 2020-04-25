@@ -23,7 +23,7 @@ namespace NSubstitute.Core
             [typeof(string)] = "string",
             [typeof(uint)] = "uint",
             [typeof(ulong)] = "ulong",
-            [typeof(ushort)] = "ushort",
+            [typeof(ushort)] = "ushort"
         };
 
         internal static string GetDisplayName(this Type type, bool full = false)
