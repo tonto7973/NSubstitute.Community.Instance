@@ -66,7 +66,7 @@ namespace NSubstitute.Instantiation
                 else if (param.HasDefaultValue)
                     newArguments[paramIndex] = param.DefaultValue;
                 else
-                    newArguments[paramIndex] = UseSubstitute(param);
+                    newArguments[paramIndex] = new LazySubstitute(constructor, param.ParameterType);
                 paramIndex++;
             }
 
@@ -95,11 +95,6 @@ namespace NSubstitute.Instantiation
             arg = null;
             return false;
         }
-
-        private static object UseSubstitute(ParameterInfo param)
-            => param.ParameterType.IsInterface
-                ? Substitute.For(new[] { param.ParameterType }, null)
-                : Instance.Of(param.ParameterType);
 
         private static bool IsInstanceOf(this ParameterInfo param, object arg)
             => arg is INullValue nullValue

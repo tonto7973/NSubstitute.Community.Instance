@@ -38,7 +38,7 @@ namespace NSubstitute
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
             if (type.IsInterface)
-                throw new MemberAccessException(SR.Format(SR.CannotCreateInstanceOfInterface, type.FullName));
+                throw new MemberAccessException(SR.Format(SR.CannotCreateInstanceOfInterface, type.GetDisplayName(full: true)));
 
             dependencies = dependencies ?? Array.Empty<object>();
 
@@ -48,8 +48,8 @@ namespace NSubstitute
 
             Activation activation = ActivationLookup
                 .For(type, dependencies)
-                .OrderBy(a => a.ConstructorInfo.IsPublic)
-                .ThenBy(a => a.Match == ArgumentMatch.Exact)
+                .OrderByDescending(a => a.ConstructorInfo.IsPublic)
+                .ThenBy(a => a.Match != ArgumentMatch.Exact)
                 .ThenBy(a => a.ConstructorInfo.GetParameters().Length)
                 .ThenBy(a => a.Match)
                 .FirstOrDefault();
@@ -58,8 +58,8 @@ namespace NSubstitute
                 return activation.Invoke();
 
             var formattedExceptionMessage = dependencies.Length > 0
-                ? SR.Format(SR.CannotFindMatchingAccessibleConstructor, type.FullName, NameForSubstitute.GetNamesFor(dependencies))
-                : SR.Format(SR.CannotFindAccessibleConstructor, type.FullName);
+                ? SR.Format(SR.CannotFindMatchingAccessibleConstructor, type.GetDisplayName(full: true), NameForSubstitute.GetNamesFor(dependencies))
+                : SR.Format(SR.CannotFindAccessibleConstructor, type.GetDisplayName(full: true));
 
             throw new MissingMethodException(formattedExceptionMessage);
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Formatting;
 using NSubstitute.Core;
 using NSubstitute.Tests.Stubs;
 using NUnit.Framework;
@@ -70,7 +71,7 @@ namespace NSubstitute.Tests
             Action action = () => Instance.Of<TestClassOne>(arg, 15, true);
 
             action.ShouldThrow<MissingMethodException>()
-                .Message.ShouldBe("Cannot find accessible constructor on type 'NSubstitute.Tests.Stubs.TestClassOne' matching dependencies '[IEqualityComparer, Int32, Boolean]'.");
+                .Message.ShouldBe("Cannot find accessible constructor on type 'NSubstitute.Tests.Stubs.TestClassOne' matching dependencies '[IEqualityComparer, int, bool]'.");
         }
 
         [Test]
@@ -112,7 +113,7 @@ namespace NSubstitute.Tests
         {
             Action action = () => Instance.Of<IDisposable>();
             action.ShouldThrow<MemberAccessException>()
-                .Message.ShouldBe("Cannot create an instance of 'System.IDisposable' because it is an interface.");
+                .Message.ShouldBe("Cannot create an instance of type 'System.IDisposable' because it is an interface.");
         }
 
         [Test]
@@ -199,6 +200,23 @@ namespace NSubstitute.Tests
             var exception = action.ShouldThrow<ArgumentNullException>();
             exception.ParamName.ShouldBe("dependencies[0]");
             exception.Message.ShouldStartWith("Dependency cannot be null; Use Instance.Null instead.");
+        }
+
+        [Test]
+        public void InstanceOf_JsonMediaTypeFormatter_DoesNotCauseStackOverflow()
+        {
+            JsonMediaTypeFormatter instance = Instance.Of<JsonMediaTypeFormatter>();
+
+            instance.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void InstanceOf_Throws_WhenTypeConstructorReferencesSelf()
+        {
+            Action action = () => Instance.Of<TestStackClass>();
+
+            action.ShouldThrow<NotSupportedException>()
+                .Message.ShouldBe("Cannot create an instance of type 'NSubstitute.Tests.Stubs.TestStackClass' because its constructor '.ctor(TestStackClass,int)' depends on itself.");
         }
     }
 }

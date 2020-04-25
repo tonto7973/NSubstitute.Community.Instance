@@ -53,7 +53,7 @@ namespace NSubstitute.Tests.Core
 
             var result = nameForSubstitute.GetNamesFor(arguments);
 
-            result.ShouldBe("Int32, DateTime, Action, IDisposable, Uri");
+            result.ShouldBe("int, DateTime, Action, IDisposable, Uri");
         }
     }
 }
