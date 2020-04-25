@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using NSubstitute.Core;
@@ -11,7 +12,7 @@ namespace NSubstitute.Instantiation
         {
             var constructorArguments = activation
                 .Arguments
-                .Select(arg => arg is INullValue ? null : arg)
+                .Select(ResolveArgument)
                 .ToArray();
 
             try
@@ -25,6 +26,16 @@ namespace NSubstitute.Instantiation
                 ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
                 return null;
             }
+        }
+
+        private static object ResolveArgument(object arg)
+        {
+            if (arg is INullValue)
+                return null;
+            else if (arg is LazySubstitute lazySubstitute)
+                return lazySubstitute.Value;
+            else
+                return arg;
         }
 
         private static object InvokeAbstract(this Activation activation, object[] constructorArguments)

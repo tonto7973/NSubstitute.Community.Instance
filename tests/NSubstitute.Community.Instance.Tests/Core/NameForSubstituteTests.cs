@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using NSubstitute.Core;
 using NSubstitute.Tests.Stubs;
@@ -75,5 +76,37 @@ namespace NSubstitute.Tests.Core
 
             result.ShouldBe("null");
         }
+
+        [Test]
+        public void GetNameFor_Array_ResolvesArray()
+        {
+            var nameForSubstitute = new NameForSubstitute();
+
+            var result = nameForSubstitute.GetNameFor(new bool[2]);
+
+            result.ShouldBe("bool[]");
+        }
+
+        [Test]
+        public void GetNameFor_GenericType_ResolvesGenerics()
+        {
+            var nameForSubstitute = new NameForSubstitute();
+
+            var result = nameForSubstitute.GetNameFor(new List<double>());
+
+            result.ShouldBe("List<double>");
+        }
+
+        [Test]
+        public void GetNameFor_NestedGenericType_ResolvesGenerics()
+        {
+            var nameForSubstitute = new NameForSubstitute();
+
+            var result = nameForSubstitute.GetNameFor(new List<NestedGenericTest<bool?, int>>());
+
+            result.ShouldBe("List<NestedGenericTest<bool?,int>>");
+        }
+
+        private class NestedGenericTest<T1, T2> { }
     }
 }

@@ -61,11 +61,20 @@ namespace NSubstitute.Instantiation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot create an instance of &apos;{0}&apos; because it is an interface..
+        ///   Looks up a localized string similar to Cannot create an instance of type &apos;{0}&apos; because it is an interface..
         /// </summary>
         internal static string CannotCreateInstanceOfInterface {
             get {
                 return ResourceManager.GetString("CannotCreateInstanceOfInterface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot create an instance of type &apos;{0}&apos; because its constructor &apos;{1}&apos; depends on itself..
+        /// </summary>
+        internal static string CannotCreateInstanceOfRecursiveType {
+            get {
+                return ResourceManager.GetString("CannotCreateInstanceOfRecursiveType", resourceCulture);
             }
         }
         

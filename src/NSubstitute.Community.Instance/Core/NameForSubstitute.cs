@@ -23,7 +23,7 @@ namespace NSubstitute.Core
 
             return TryGetNameForProxyType(substitute, out var typeName)
                 ? typeName
-                : substitute.GetType().Name;
+                : substitute.GetType().GetDisplayName();
         }
 
         private static bool TryGetNameForProxyType(object substitute, out string typeName)
