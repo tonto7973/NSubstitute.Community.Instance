@@ -216,7 +216,7 @@ namespace NSubstitute.Tests
             Action action = () => Instance.Of<TestStackClass>();
 
             action.ShouldThrow<NotSupportedException>()
-                .Message.ShouldBe("Cannot create an instance of type 'NSubstitute.Tests.Stubs.TestStackClass' because its constructor '.ctor(TestStackClass,int)' depends on itself.");
+                .Message.ShouldBe("Cannot create an instance of type 'NSubstitute.Tests.Stubs.TestStackClass' because its constructor '.ctor(TestStackClass,int[],bool?)' depends on itself.");
         }
     }
 }

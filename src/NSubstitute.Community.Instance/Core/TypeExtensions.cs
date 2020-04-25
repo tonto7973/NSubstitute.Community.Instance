@@ -40,7 +40,12 @@ namespace NSubstitute.Core
 
         private static void ProcessType(StringBuilder builder, Type type)
         {
-            if (type.IsGenericType)
+            if (type.IsNullableType(out Type underlyingType))
+            {
+                ProcessType(builder, underlyingType);
+                builder.Append('?');
+            }
+            else if (type.IsGenericType)
             {
                 Type[] genericArguments = type.GetGenericArguments();
                 ProcessGenericType(builder, type, genericArguments, genericArguments.Length);
@@ -52,10 +57,6 @@ namespace NSubstitute.Core
             else if (BuiltInTypeNames.TryGetValue(type, out var builtInName))
             {
                 builder.Append(builtInName);
-            }
-            else if (type.IsGenericParameter)
-            {
-                builder.Append(type.Name);
             }
             else
             {
@@ -114,6 +115,18 @@ namespace NSubstitute.Core
             }
 
             builder.Append('>');
+        }
+
+        private static bool IsNullableType(this Type type, out Type underlyingType)
+        {
+            underlyingType = null;
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                underlyingType = Nullable.GetUnderlyingType(type);
+            }
+
+            return underlyingType != null;
         }
     }
 }
