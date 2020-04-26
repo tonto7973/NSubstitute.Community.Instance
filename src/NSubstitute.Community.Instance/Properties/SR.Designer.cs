@@ -79,6 +79,15 @@ namespace NSubstitute.Instantiation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot create an instance of type &apos;{0}&apos; because it has unbounded type parameters..
+        /// </summary>
+        internal static string CannotCreateInstanceOfUnboundedType {
+            get {
+                return ResourceManager.GetString("CannotCreateInstanceOfUnboundedType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot find accessible constructor on type &apos;{0}&apos;..
         /// </summary>
         internal static string CannotFindAccessibleConstructor {

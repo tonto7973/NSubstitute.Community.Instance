@@ -197,7 +197,7 @@ namespace NSubstitute.Tests
         {
             Action action = () => Instance.Of<TestClassSeven>(new object[] { null });
 
-            var exception = action.ShouldThrow<ArgumentNullException>();
+            ArgumentNullException exception = action.ShouldThrow<ArgumentNullException>();
             exception.ParamName.ShouldBe("dependencies[0]");
             exception.Message.ShouldStartWith("Dependency cannot be null; Use Instance.Null instead.");
         }
@@ -217,6 +217,41 @@ namespace NSubstitute.Tests
 
             action.ShouldThrow<NotSupportedException>()
                 .Message.ShouldBe("Cannot create an instance of type 'NSubstitute.Tests.Stubs.TestStackClass' because its constructor '.ctor(TestStackClass,int[],bool?)' depends on itself.");
+        }
+
+        [Test]
+        public void InstanceOf_SupportsValueTypes()
+        {
+            var instance = Instance.Of(typeof(bool));
+
+            instance.ShouldBe(false);
+        }
+
+        [Test]
+        public void InstanceOf_SupportsArrays()
+        {
+            var instance = Instance.Of<int[]>();
+
+            instance.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void InstanceOf_Throws_WhenTypeIsOpen()
+        {
+            Action action = () => Instance.Of(typeof(List<>));
+
+            action.ShouldThrow<MemberAccessException>()
+                .Message.ShouldBe("Cannot create an instance of type 'System.Collections.Generic.List<>' because it has unbounded type parameters.");
+        }
+
+        [Test]
+        public void InstanceOf_CreatesInstanceOfSelfReferenceType_WhenReferencePassed()
+        {
+            var @base = new TestStackClass(null, null, false);
+
+            TestStackClass instance = Instance.Of<TestStackClass>(@base);
+
+            instance.ShouldNotBeNull();
         }
     }
 }

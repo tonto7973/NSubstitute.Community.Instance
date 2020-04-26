@@ -39,6 +39,8 @@ namespace NSubstitute
                 throw new ArgumentNullException(nameof(type));
             if (type.IsInterface)
                 throw new MemberAccessException(SR.Format(SR.CannotCreateInstanceOfInterface, type.GetDisplayName(full: true)));
+            if (type.ContainsGenericParameters)
+                throw new MemberAccessException(SR.Format(SR.CannotCreateInstanceOfUnboundedType, type.GetDisplayName(full: true)));
 
             dependencies = dependencies ?? Array.Empty<object>();
 
@@ -56,6 +58,9 @@ namespace NSubstitute
 
             if (activation != null)
                 return activation.Invoke();
+
+            if (type.IsValueType && dependencies.Length == 0)
+                return Activator.CreateInstance(type);
 
             var formattedExceptionMessage = dependencies.Length > 0
                 ? SR.Format(SR.CannotFindMatchingAccessibleConstructor, type.GetDisplayName(full: true), NameForSubstitute.GetNamesFor(dependencies))

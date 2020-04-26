@@ -9,6 +9,8 @@ namespace NSubstitute.Instantiation
 {
     internal static class ActivationLookup
     {
+        private static readonly IDefaultForType DefaultForType = new DefaultForType();
+
         internal static IEnumerable<Activation> For(Type type, object[] constructorArguments)
         {
             IEnumerable<ConstructorInfo> constructors = type
@@ -64,7 +66,7 @@ namespace NSubstitute.Instantiation
                 if (TryUseArgument(param, args, out var arg, ref exactOrder))
                     newArguments[paramIndex] = arg;
                 else if (param.HasDefaultValue)
-                    newArguments[paramIndex] = param.DefaultValue;
+                    newArguments[paramIndex] = GetDefaultValue(param);
                 else
                     newArguments[paramIndex] = new LazySubstitute(constructor, param.ParameterType);
                 paramIndex++;
@@ -76,6 +78,14 @@ namespace NSubstitute.Instantiation
                 ? new Activation { Arguments = newArguments, ConstructorInfo = constructor, Match = match }
                 : null;
             return partialMatchFound;
+        }
+
+        private static object GetDefaultValue(ParameterInfo param)
+        {
+            var value = param.DefaultValue;
+            if (value == null && param.ParameterType.IsValueType)
+                value = DefaultForType.GetDefaultFor(param.ParameterType);
+            return value;
         }
 
         private static bool TryUseArgument(ParameterInfo param, List<object> args, out object arg, ref bool exactOrder)

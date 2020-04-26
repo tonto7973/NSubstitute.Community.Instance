@@ -123,6 +123,9 @@
   <data name="CannotCreateInstanceOfRecursiveType" xml:space="preserve">
     <value>Cannot create an instance of type '{0}' because its constructor '{1}' depends on itself.</value>
   </data>
+  <data name="CannotCreateInstanceOfUnboundedType" xml:space="preserve">
+    <value>Cannot create an instance of type '{0}' because it has unbounded type parameters.</value>
+  </data>
   <data name="CannotFindAccessibleConstructor" xml:space="preserve">
     <value>Cannot find accessible constructor on type '{0}'.</value>
   </data>
