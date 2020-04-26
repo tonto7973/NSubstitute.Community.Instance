@@ -172,6 +172,27 @@ Instance.Of<MyBaseClass>();
 
 `Instance.Of<TType>` supports only classes. Use `Substitute.For<TType>` for interfaces.
 
+### Recursive constructor pattern is not supported
+
+Creating an instance using a constructor with a parameter that takes the declaring type is not supported. Consider the following class:
+
+```csharp
+public class Node
+{
+    public Node(Node parent, int depth) { ... }
+}
+// Calling
+Instance.Of<Node>();
+// would fail with `NotSupportedException`
+```
+
+This is due to the fact that `Instance.Of` creates substitutes for constructor parameters automatically. In this case the constructor parameter references itself and thus instantiation would cause stack overflow. To bypass this limitation, you need to pass the dependency itself or its null representation:
+
+```csharp
+var parent = Instance.Null<Node>(); // or parent = new Node(null, 0);
+var node = Instance.Of<Node>(parent);
+```
+
 ## Suported platforms
 
 * [.NET Standard 2.0](https://github.com/dotnet/standard/blob/master/docs/versions/netstandard2.0.md) - _See the [implementation support](https://docs.microsoft.com/en-us/dotnet/standard/net-standard)._

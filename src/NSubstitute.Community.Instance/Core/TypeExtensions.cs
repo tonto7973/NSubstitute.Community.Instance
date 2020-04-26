@@ -38,7 +38,7 @@ namespace NSubstitute.Core
             return builder.ToString();
         }
 
-        private static void ProcessType(StringBuilder builder, Type type)
+        private static void ProcessType(StringBuilder builder, Type type, bool isGeneric = false)
         {
             if (type.IsNullableType(out Type underlyingType))
             {
@@ -58,11 +58,14 @@ namespace NSubstitute.Core
             {
                 builder.Append(builtInName);
             }
-            else
+            else if (!IsOpenGenericType(type, isGeneric))
             {
                 builder.Append(type.Name);
             }
         }
+
+        private static bool IsOpenGenericType(Type type, bool isGeneric)
+            => isGeneric && type.Name == "T" && type.FullName == null && type.IsNested;
 
         private static void ProcessArrayType(StringBuilder builder, Type type)
         {
@@ -106,7 +109,7 @@ namespace NSubstitute.Core
 
             for (var i = offset; i < length; i++)
             {
-                ProcessType(builder, genericArguments[i]);
+                ProcessType(builder, genericArguments[i], true);
 
                 if (i + 1 < length)
                 {
