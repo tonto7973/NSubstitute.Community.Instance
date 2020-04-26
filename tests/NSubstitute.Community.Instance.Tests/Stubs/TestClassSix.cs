@@ -2,7 +2,7 @@
 {
     public class TestClassSix
     {
-        public TestBaseAbstractClassOne AbstractClass { get;  }
+        public TestBaseAbstractClassOne AbstractClass { get; }
 
         public ITestInterfaceOne InterfaceOne { get; }
 

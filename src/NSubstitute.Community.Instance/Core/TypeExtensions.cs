@@ -65,9 +65,7 @@ namespace NSubstitute.Core
         }
 
         private static bool IsOpenGenericType(Type type, bool isGeneric)
-        {
-            return isGeneric && type.Name == "T" && type.FullName == null && type.IsNested;
-        }
+            => isGeneric && type.Name == "T" && type.FullName == null && type.IsNested;
 
         private static void ProcessArrayType(StringBuilder builder, Type type)
         {

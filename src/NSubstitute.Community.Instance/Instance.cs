@@ -20,11 +20,8 @@ namespace NSubstitute
         /// <param name="dependencies">Optional dependencies used to instantiate the type. These will not be substituted.</param>
         /// <returns>An instance of the type.</returns>
         /// <remarks>Interfaces are not supported.</remarks>
-        public static TType Of<TType>(params object[] dependencies)
-            where TType : class
-        {
-            return (TType)Of(typeof(TType), dependencies);
-        }
+        public static TType Of<TType>(params object[] dependencies) where TType : class
+            => (TType)Of(typeof(TType), dependencies);
 
         /// <summary>
         /// Creates an instance of a type with dependencies automatically substituted.
