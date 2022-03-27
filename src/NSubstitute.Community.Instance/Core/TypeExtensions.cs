@@ -6,7 +6,7 @@ namespace NSubstitute.Core
 {
     internal static class TypeExtensions
     {
-        private static readonly Dictionary<Type, string> BuiltInTypeNames = new Dictionary<Type, string>
+        private static readonly Dictionary<Type, string> BuiltInTypeNames = new()
         {
             [typeof(void)] = "void",
             [typeof(bool)] = "bool",

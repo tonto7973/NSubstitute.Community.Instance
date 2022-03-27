@@ -17,7 +17,7 @@ namespace NSubstitute.Instantiation
 
         private static object Activate(ConstructorInfo constructor, Type type)
             => type.IsInterface
-                ? Substitute.For(new[] { type }, null)
+                ? Substitute.For(new[] { type }, Array.Empty<object>())
                 : ActivateInstance(constructor, type);
 
         private static object ActivateInstance(ConstructorInfo constructor, Type type)

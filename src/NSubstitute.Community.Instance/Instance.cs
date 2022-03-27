@@ -39,7 +39,7 @@ namespace NSubstitute
             if (type.ContainsGenericParameters)
                 throw new MemberAccessException(SR.Format(SR.CannotCreateInstanceOfUnboundedType, type.GetDisplayName(full: true)));
 
-            dependencies = dependencies ?? Array.Empty<object>();
+            dependencies ??= Array.Empty<object>();
 
             var firstNullValue = Array.IndexOf(dependencies, null);
             if (firstNullValue > -1)
