@@ -2,7 +2,7 @@
 {
     public sealed class TestSealedClass
     {
-        public static TestSealedClass Instance = new TestSealedClass();
+        public readonly static TestSealedClass Instance = new();
 
         private TestSealedClass() { }
     }

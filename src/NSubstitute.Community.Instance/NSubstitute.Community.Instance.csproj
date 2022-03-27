@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>NSubstitute</RootNamespace>
     <Configurations>Debug;Release;Signed</Configurations>
     <NeutralLanguage>en-US</NeutralLanguage>
+	<EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -25,22 +26,18 @@
   </ItemGroup>
 
   <ItemGroup Label="Packages">
-    <PackageReference Include="NSubstitute" Version="4.2.1" />
+    <PackageReference Include="NSubstitute" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup Label="Analyzers">
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.6.0.16497">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.36.1.44192">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Properties\SR.Designer.cs">
+    <Compile Update="Instantiation\SR.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SR.resx</DependentUpon>
@@ -48,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Properties\SR.resx">
+    <EmbeddedResource Update="Instantiation\SR.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SR.Designer.cs</LastGenOutput>
     </EmbeddedResource>

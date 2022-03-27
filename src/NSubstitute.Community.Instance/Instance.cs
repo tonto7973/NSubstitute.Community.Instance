@@ -39,7 +39,7 @@ namespace NSubstitute
             if (type.ContainsGenericParameters)
                 throw new MemberAccessException(SR.Format(SR.CannotCreateInstanceOfUnboundedType, type.GetDisplayName(full: true)));
 
-            dependencies = dependencies ?? Array.Empty<object>();
+            dependencies ??= Array.Empty<object>();
 
             var firstNullValue = Array.IndexOf(dependencies, null);
             if (firstNullValue > -1)
@@ -67,11 +67,19 @@ namespace NSubstitute
         }
 
         /// <summary>
-        /// Creates a null substitute of a type.
+        /// Creates a null substitute of a type to use with <see cref="Instance.Of{TType}(object[])"/>.
+        /// </summary>
+        /// <param name="type">The type to substitute as null.</param>
+        /// <returns>Null substitute for the type.</returns>
+        public static INullValue Null(Type type)
+            => new NullValue(type);
+
+        /// <summary>
+        /// Creates a null substitute of a type to use with <see cref="Instance.Of{TType}(object[])"/>.
         /// </summary>
         /// <typeparam name="TType">The type to substitute as null.</typeparam>
         /// <returns>Null substitute for the type.</returns>
         public static INullValue Null<TType>()
-            => new NullValue(typeof(TType));
+            => Null(typeof(TType));
     }
 }

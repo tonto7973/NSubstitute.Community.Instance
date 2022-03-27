@@ -253,5 +253,15 @@ namespace NSubstitute.Tests
 
             instance.ShouldNotBeNull();
         }
+
+        [TestCase(typeof(ITestInterfaceOne), "dependencyOne")]
+        [TestCase(typeof(IEnumerable<bool>), "dependencyTwo")]
+        public void InstanceNull_MakesConstructorThrow_WhenCheckingArguments(Type dependency, string paramName)
+        {
+            Action action = () => Instance.Of<TestDependencies>(Instance.Null(dependency));
+
+            action.ShouldThrow<ArgumentNullException>()
+                .ParamName.ShouldBe(paramName);
+        }
     }
 }

@@ -12,14 +12,14 @@
     <copyright>(c) Ondrej Urik. All rights reserved.</copyright>
     <tags>NSubstitute dependencies instance unit tests</tags>
     <dependencies>
-      <group targetFramework="netstandard2.0">
-        <dependency id="NSubstitute" version="4.2.1" />
+      <group targetFramework="net6.0">
+        <dependency id="NSubstitute" version="4.3.0" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Signed\netstandard2.0\NSubstitute.Community.Instance.dll" target="lib\netstandard2.0" />
-    <file src="bin\Signed\netstandard2.0\NSubstitute.Community.Instance.pdb" target="lib\netstandard2.0" />
-    <file src="bin\Signed\netstandard2.0\NSubstitute.Community.Instance.xml" target="lib\netstandard2.0" />
+    <file src="bin\Signed\net6.0\NSubstitute.Community.Instance.dll" target="lib\net6.0" />
+    <file src="bin\Signed\net6.0\NSubstitute.Community.Instance.pdb" target="lib\net6.0" />
+    <file src="bin\Signed\net6.0\NSubstitute.Community.Instance.xml" target="lib\net6.0" />
   </files>
 </package>
