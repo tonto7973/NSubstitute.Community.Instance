@@ -1,12 +1,7 @@
 ﻿namespace NSubstitute.Tests.Stubs
 {
-    public abstract class TestBaseAbstractClassOne
+    public abstract class TestBaseAbstractClassOne(ITestInterfaceOne testInterface)
     {
-        public ITestInterfaceOne TestInterface { get; }
-
-        protected TestBaseAbstractClassOne(ITestInterfaceOne testInterface)
-        {
-            TestInterface = testInterface;
-        }
+        public ITestInterfaceOne TestInterface { get; } = testInterface;
     }
 }

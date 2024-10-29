@@ -32,14 +32,13 @@ namespace NSubstitute
         /// <remarks>Interfaces are not supported.</remarks>
         public static object Of(Type type, params object[] dependencies)
         {
-            if (type == null)
-                throw new ArgumentNullException(nameof(type));
+            ArgumentNullException.ThrowIfNull(type);
             if (type.IsInterface)
                 throw new MemberAccessException(SR.Format(SR.CannotCreateInstanceOfInterface, type.GetDisplayName(full: true)));
             if (type.ContainsGenericParameters)
                 throw new MemberAccessException(SR.Format(SR.CannotCreateInstanceOfUnboundedType, type.GetDisplayName(full: true)));
 
-            dependencies ??= Array.Empty<object>();
+            dependencies ??= [];
 
             var firstNullValue = Array.IndexOf(dependencies, null);
             if (firstNullValue > -1)

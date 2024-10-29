@@ -9,7 +9,7 @@ namespace NSubstitute.Instantiation
 {
     internal static class ActivationLookup
     {
-        private static readonly IDefaultForType DefaultForType = new DefaultForType();
+        private static readonly DefaultForType DefaultForType = new();
 
         internal static IEnumerable<Activation> For(Type type, object[] constructorArguments)
         {

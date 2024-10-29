@@ -1,12 +1,7 @@
 ﻿namespace NSubstitute.Tests.Stubs
 {
-    public class TestClassFive
+    public class TestClassFive(TestSealedClass dependency)
     {
-        public TestSealedClass Dependency { get; }
-
-        public TestClassFive(TestSealedClass dependency)
-        {
-            Dependency = dependency;
-        }
+        public TestSealedClass Dependency { get; } = dependency;
     }
 }

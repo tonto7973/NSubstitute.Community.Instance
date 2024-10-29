@@ -2,19 +2,12 @@
 
 namespace NSubstitute.Tests.Stubs
 {
-    public class TestStackClass
+    public class TestStackClass(TestStackClass @base, int[] age, bool? solid)
     {
-        public TestStackClass Base { get; }
+        public TestStackClass Base { get; } = @base;
 
-        public int Age { get; }
+        public int Age { get; } = age?.FirstOrDefault() ?? 0;
 
-        public bool? Solid { get; }
-
-        public TestStackClass(TestStackClass @base, int[] age, bool? solid)
-        {
-            Base = @base;
-            Age = age?.FirstOrDefault() ?? 0;
-            Solid = solid;
-        }
+        public bool? Solid { get; } = solid;
     }
 }

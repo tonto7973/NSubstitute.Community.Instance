@@ -4,20 +4,15 @@ using NSubstitute.Core;
 
 namespace NSubstitute.Instantiation
 {
-    internal class LazySubstitute
+    internal class LazySubstitute(ConstructorInfo constructor, Type type)
     {
-        private readonly Lazy<object> _instance;
+        private readonly Lazy<object> _instance = new(() => Activate(constructor, type));
 
         public object Value => _instance.Value;
 
-        public LazySubstitute(ConstructorInfo constructor, Type type)
-        {
-            _instance = new Lazy<object>(() => Activate(constructor, type));
-        }
-
         private static object Activate(ConstructorInfo constructor, Type type)
             => type.IsInterface
-                ? Substitute.For(new[] { type }, Array.Empty<object>())
+                ? Substitute.For([type], [])
                 : ActivateInstance(constructor, type);
 
         private static object ActivateInstance(ConstructorInfo constructor, Type type)

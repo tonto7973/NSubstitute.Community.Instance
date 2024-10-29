@@ -10,8 +10,7 @@ namespace NSubstitute.Core
     {
         public static string GetNamesFor(this INameForSubstitute nameForSubstitute, IEnumerable<object> substitutes)
         {
-            if (nameForSubstitute == null)
-                throw new ArgumentNullException(nameof(nameForSubstitute));
+            ArgumentNullException.ThrowIfNull(nameForSubstitute);
 
             if (substitutes == null)
                 return string.Empty;
