@@ -195,4 +195,4 @@ var node = Instance.Of<Node>(parent);
 
 ## Suported platforms
 
-* [.NET 6.0](https://docs.microsoft.com/en-us/dotnet/core/whats-new/dotnet-6)
+* [.NET 8.0](https://docs.microsoft.com/en-us/dotnet/core/whats-new/dotnet-8)
