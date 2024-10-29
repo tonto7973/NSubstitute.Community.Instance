@@ -42,7 +42,7 @@ namespace NSubstitute.Instantiation
                     .Current
                     .SubstituteFactory
                     .CreatePartial(
-                        new[] { activation.ConstructorInfo.DeclaringType },
+                        [activation.ConstructorInfo.DeclaringType],
                         constructorArguments);
 
         private static object InvokeConcrete(this Activation activation, object[] constructorArguments)

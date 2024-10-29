@@ -2,13 +2,8 @@
 
 namespace NSubstitute.Tests.Stubs
 {
-    public class TestClassThree
+    public class TestClassThree(TestClassTwo testClassTwo)
     {
-        public TestClassTwo TestClassTwo { get; }
-
-        public TestClassThree(TestClassTwo testClassTwo)
-        {
-            TestClassTwo = testClassTwo ?? throw new ArgumentNullException(nameof(testClassTwo));
-        }
+        public TestClassTwo TestClassTwo { get; } = testClassTwo ?? throw new ArgumentNullException(nameof(testClassTwo));
     }
 }

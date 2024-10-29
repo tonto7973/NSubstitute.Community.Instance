@@ -13,7 +13,7 @@ namespace NSubstitute.Tests.Core
         {
             NameForSubstitute nameForSubstitute = null;
 
-            Action action = () => nameForSubstitute.GetNamesFor(Array.Empty<object>());
+            Action action = () => nameForSubstitute.GetNamesFor([]);
 
             action.ShouldThrow<ArgumentNullException>()
                 .ParamName.ShouldBe("nameForSubstitute");
@@ -34,7 +34,7 @@ namespace NSubstitute.Tests.Core
         {
             var nameForSubstitute = new NameForSubstitute();
 
-            var result = nameForSubstitute.GetNamesFor(Array.Empty<object>());
+            var result = nameForSubstitute.GetNamesFor([]);
 
             result.ShouldBe(string.Empty);
         }

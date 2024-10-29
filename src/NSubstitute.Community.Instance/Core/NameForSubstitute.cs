@@ -6,10 +6,10 @@ using System.Text.RegularExpressions;
 
 namespace NSubstitute.Core
 {
-    public class NameForSubstitute : INameForSubstitute
+    public partial class NameForSubstitute : INameForSubstitute
     {
         private static readonly Regex RxSubstitute
-            = new("^Substitute\\.(.*?)\\|[a-z0-9]+$", RegexOptions.Compiled);
+            = RxSubstituteTemplate();
 
         private static readonly Lazy<Assembly> DynamicProxyAssembly
             = new(() => Substitute.For<object>().GetType().Assembly);
@@ -40,5 +40,8 @@ namespace NSubstitute.Core
             typeName = null;
             return false;
         }
+
+        [GeneratedRegex("^Substitute\\.(.*?)\\|[a-z0-9]+$", RegexOptions.Compiled)]
+        private static partial Regex RxSubstituteTemplate();
     }
 }

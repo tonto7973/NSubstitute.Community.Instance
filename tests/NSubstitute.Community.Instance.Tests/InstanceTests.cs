@@ -195,7 +195,7 @@ namespace NSubstitute.Tests
         [Test]
         public void InstanceOf_Throws_WhenDependencyIsNull()
         {
-            Action action = () => Instance.Of<TestClassSeven>(new object[] { null });
+            Action action = () => Instance.Of<TestClassSeven>([null]);
 
             ArgumentNullException exception = action.ShouldThrow<ArgumentNullException>();
             exception.ParamName.ShouldBe("dependencies[0]");
